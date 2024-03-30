@@ -8,10 +8,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Microsoft.Msagl;
 using Microsoft.Msagl.Drawing;
-using Microsoft.Msagl.GraphViewerGdi;
 using System.Windows.Forms;
+using Microsoft.Msagl.GraphViewerGdi;
 using System.Diagnostics;
 namespace Mind_maps_editor
 {
