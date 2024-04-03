@@ -1,0 +1,43 @@
+@startuml
+skinparam BackgroundColor transparent
+skinparam componentStyle uml2
+component Client {
+    component "Graph Viewer" as c1
+    component "Graph Model" as c2
+    component "Graph Controller" as c3
+    component "Files Handler" as c4
+    component "Transformator" as c5
+    component "Table Handler" as c6
+    interface "IGraph" as i1
+    interface "IViewer" as i2
+    interface "IModel" as i3
+    interface "ITransformator" as i4
+    interface "ITableHandler" as i5
+    interface "IFile" as i6
+    interface "ITable" as i7
+    portin clientPort
+    clientPort --> i1
+    clientPort --> i7
+    i1 -left-> c3
+    i7 --> c3
+    c3 -left-> i2
+    c3 --> i3
+    c3 --> i4
+    c3 --> i5
+    c3 --> i6
+    i2 --> c1
+    i3 --> c2
+    i4 --> c5
+    i5 --> c6
+    i6 --> c4
+}
+component "Graph Database" as c7 {
+    portout graphPort
+}
+component "Relational Database" as c8 {
+    portout relationalPort
+}
+
+graphPort --> clientPort
+relationalPort -left-> clientPort
+@enduml
