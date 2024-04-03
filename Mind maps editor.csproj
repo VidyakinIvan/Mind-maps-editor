@@ -7,6 +7,13 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+	<UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutomaticGraphLayout.GraphViewerGDI" Version="1.1.12" />
+    <PackageReference Include="QuikGraph" Version="2.5.0" />
+    <PackageReference Include="QuikGraph.MSAGL" Version="2.5.0" />
+  </ItemGroup>
 
 </Project>
