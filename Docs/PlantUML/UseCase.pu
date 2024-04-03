@@ -1,0 +1,23 @@
+@startuml usecase
+left to right direction
+skinparam packageStyle rect
+actor User
+package Program {
+    usecase (creates a new mindmap) as uc1
+    usecase (opens existing mindmap) as uc2
+    usecase (adds new nodes or edges) as uc3
+    usecase (exports mindmap) as uc4
+    usecase (transforms existing mindmap) as uc5
+    usecase (modifies existing nodes or edges) as uc6
+    usecase (deletes existing nodes or edges) as uc7
+    usecase (manages filelinks) as uc8
+}
+User --> uc1
+User --> uc2
+User --> uc3
+User --> uc4
+User --> uc5
+User --> uc6
+User --> uc7
+User --> uc8
+@enduml
