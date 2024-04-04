@@ -1,0 +1,24 @@
+﻿@startuml
+Actor MainWindow as main
+Participant Controller as controller
+Participant ITranformator as trans
+Participant IModel as model
+Participant MindGraph as graph
+Participant MindNode as node
+Participant MindEdge as edge
+Participant IView as view
+
+main -> controller : sends transform mindmap request
+controller -> model : sends get mindmap request
+model -> controller : returns mindmap structure
+controller -> trans : sends current mindmap
+trans -> controller : returns mindmap in new format
+controller -> model : changes model
+model -> graph : creates new empty mindmap
+model --> node : creates needed nodes
+model --> edge : creates needed edges
+model --> graph : initialize mindmap with nodes and edges
+model -> controller : sends new mindmap structure
+controller -> view : updates view
+view -> main : sends new view to draw
+@enduml
