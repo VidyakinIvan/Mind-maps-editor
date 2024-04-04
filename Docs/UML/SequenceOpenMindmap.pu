@@ -1,0 +1,16 @@
+﻿@startuml
+Actor MainWindow as main
+Participant Controller as controller
+Participant FilesHandler as files
+Participant IModel as model
+Participant IView as view
+
+
+main -> controller : sends open mindmap request
+controller -> files : use handler to read file
+files -> controller : returns mindmap structure
+controller -> model : changes model
+model -> controller : sends new mindmap structure
+controller -> view : updates view
+view -> main : sends new view to draw
+@enduml
