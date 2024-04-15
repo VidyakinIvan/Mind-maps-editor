@@ -1,0 +1,13 @@
+﻿@startuml
+Actor MainWindow as main
+Participant Controller as controller
+Participant IModel as model
+Participant IView as view
+
+
+main -> controller : sends new mindmap request
+controller -> model : clears model
+model -> controller : sends new mindmap structure
+controller -> view : updates view
+view -> main : sends new view to draw
+@enduml

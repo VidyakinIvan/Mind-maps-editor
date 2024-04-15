@@ -1,0 +1,49 @@
+@startuml
+class Controller
+class GraphModel
+class MindGraph
+class MindNode
+Class MindEdge
+class GraphView
+class Transformator
+class TableModel
+class TableView
+class FilesHandler
+class DBConnector
+class MainWindow
+interface IModel
+interface IView
+interface IDBConnector
+interface INode
+interface IEdge
+interface IEdgeListAndIncidenceGraph
+interface IMutableBidirectionalGraph
+interface ICloneable
+interface IController
+interface ITransformator
+interface IFilesHandler
+
+IModel <|.right. GraphModel
+IModel <|.. TableModel
+IView <|.. GraphView
+IView <|.. TableView
+IDBConnector <|.. DBConnector
+IEdge <|.. MindEdge
+INode <|.. MindNode
+IEdgeListAndIncidenceGraph <|.. MindGraph
+IMutableBidirectionalGraph <|.. MindGraph
+ICloneable <|.. MindGraph
+IController <|.. Controller
+ITransformator <|.. Transformator
+IFilesHandler <|.. FilesHandler
+
+MainWindow o-- IController
+MainWindow o-- IView
+MainWindow o-right- IModel
+GraphModel *-right- MindGraph
+MindGraph *-- INode
+MindGraph *-- IEdge
+Controller *-- ITransformator
+Controller *-- IFilesHandler
+Controller *-- IDBConnector
+@enduml
