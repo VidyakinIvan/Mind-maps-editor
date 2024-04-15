@@ -1,0 +1,16 @@
+﻿@startuml
+Actor MainWindow as main
+Participant Controller as controller
+Participant FilesHandler as files
+Participant IModel as model
+
+main -> controller : sends save mindmap request
+controller -> model : sends get mindmap request
+model -> controller : returns mindmap structure
+model -> controller : sends new mindmap structure
+controller -> files : use handler to save file
+files --> controller : success
+controller --> main : successfully saved
+files --> controller : error
+controller --> main : file error
+@enduml
