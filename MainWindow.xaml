@@ -4,13 +4,26 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mind_maps_editor"
-        Loaded="Window_Loaded"
-        xmlns:gv="clr-namespace:Microsoft.Msagl.GraphViewerGdi;assembly=Microsoft.Msagl.GraphViewerGDI"
+        xmlns:gv="clr-namespace:Microsoft.Msagl.GraphViewerGdi;assembly=Microsoft.Msagl.GraphViewerGDI" d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <WindowsFormsHost>
-            <gv:GViewer x:Name="gViewer" Click="GraphNodeClicked"></gv:GViewer>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btnGraph" Grid.Column="1" Grid.Row="1" Background="LightGray" Content="Граф" Click="btnGraph_Click"/>
+        <Button x:Name="btnTable" Grid.Column="1" Grid.Row="3" Background="LightGray" Content="Таблица" Click="btnTable_Click"/>
+        <WindowsFormsHost Name="wfh" Grid.ColumnSpan="3" Grid.RowSpan="5">
+            <gv:GViewer x:Name="gViewer"></gv:GViewer>
         </WindowsFormsHost>
     </Grid>
 </Window>

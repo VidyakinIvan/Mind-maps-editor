@@ -22,22 +22,21 @@ namespace Mind_maps_editor
         public MainWindow()
         {
             InitializeComponent();
+            wfh.Visibility = Visibility.Hidden;
+            DataContext = new ViewModel();
+            gViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
         }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+
+        private void btnGraph_Click(object sender, RoutedEventArgs e)
         {
-            Graph graph = new();
-            graph.AddNode("A");
-            this.gViewer.Graph = graph;
+            btnGraph.Visibility = Visibility.Hidden;
+            btnTable.Visibility = Visibility.Hidden;
+            wfh.Visibility = Visibility.Visible;
         }
-        private void GraphNodeClicked(object sender, EventArgs e)
+
+        private void btnTable_Click(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("GraphNodeClicked");
-            if (sender is not GViewer gViewer || gViewer?.SelectedObject is not Node node)
-            {
-                return;
-            }
-            Debug.WriteLine(node.Label.Text);
-            System.Windows.MessageBox.Show(node.Label.Text);
+
         }
     }
 }
