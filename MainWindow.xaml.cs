@@ -24,6 +24,7 @@ namespace Mind_maps_editor
             InitializeComponent();
             wfh.Visibility = Visibility.Hidden;
             DataContext = new ViewModel();
+            gViewer.ToolBarIsVisible = false;
             gViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
@@ -34,9 +35,5 @@ namespace Mind_maps_editor
             wfh.Visibility = Visibility.Visible;
         }
 
-        private void btnTable_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 }

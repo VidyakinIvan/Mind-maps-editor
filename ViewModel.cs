@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Msagl.Drawing;
@@ -10,13 +12,15 @@ namespace Mind_maps_editor
 {
     internal class ViewModel : INotifyPropertyChanged
     {
+        private GraphModel graphModel;
+        private int id = 0;
         private Graph graph1;
+        private RelayCommand? testCommand;
         public ViewModel()
         {
             graph1 = new Graph();
-            graph1.AddNode("A");
-            graph1.AddNode("B");
-            graph1.AddEdge("A", "B");
+            graphModel = new GraphModel();
+            Graph = graphModel.Graph;
         }
         public Graph Graph
         {
@@ -27,10 +31,23 @@ namespace Mind_maps_editor
                 OnPropertyChanged(nameof(Graph));
             }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+        public RelayCommand? TestCommand
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get
+            {
+                return testCommand ??
+                    (testCommand = new RelayCommand(obj =>
+                    {
+                        graphModel.Graph.AddNode(new Node(id.ToString()));
+                        id++;
+                    }));
+            }
+        }
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

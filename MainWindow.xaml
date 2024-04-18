@@ -21,7 +21,7 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Button x:Name="btnGraph" Grid.Column="1" Grid.Row="1" Background="LightGray" Content="Граф" Click="btnGraph_Click"/>
-        <Button x:Name="btnTable" Grid.Column="1" Grid.Row="3" Background="LightGray" Content="Таблица" Click="btnTable_Click"/>
+        <Button x:Name="btnTable" Grid.Column="1" Grid.Row="3" Background="LightGray" Content="Таблица" Command="{Binding TestCommand}"/>
         <WindowsFormsHost Name="wfh" Grid.ColumnSpan="3" Grid.RowSpan="5">
             <gv:GViewer x:Name="gViewer"></gv:GViewer>
         </WindowsFormsHost>
