@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -12,6 +11,7 @@ using Microsoft.Msagl.Drawing;
 using System.Windows.Forms;
 using Microsoft.Msagl.GraphViewerGdi;
 using System.Diagnostics;
+using Microsoft.VisualBasic.Logging;
 namespace Mind_maps_editor
 {
     /// <summary>
@@ -35,5 +35,18 @@ namespace Mind_maps_editor
             wfh.Visibility = Visibility.Visible;
         }
 
+        private void gViewer_Click(object sender, EventArgs e)
+        {
+            
+            if (e is MouseEventArgs me && me.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                ContextMenu? cm = FindResource("cmGraph") as ContextMenu;
+                if (cm != null)
+                {
+                    cm.PlacementTarget = sender as System.Windows.Controls.Button;
+                    cm.IsOpen = true;
+                }
+            }
+        }
     }
 }
