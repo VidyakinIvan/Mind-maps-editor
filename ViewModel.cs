@@ -39,9 +39,9 @@ namespace Mind_maps_editor
                 return testCommand ??
                     (testCommand = new RelayCommand(obj =>
                     {
-                        Debug.WriteLine("TestCommand");
                         graphModel.Graph.AddNode(new Node(id.ToString()));
                         id++;
+                        OnPropertyChanged(nameof(Graph));
                     }));
             }
         }

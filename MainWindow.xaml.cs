@@ -30,7 +30,6 @@ namespace Mind_maps_editor
 
         private void gViewer_Click(object sender, EventArgs e)
         {
-            
             if (e is MouseEventArgs me && me.Button == System.Windows.Forms.MouseButtons.Right)
             {
                 ContextMenu? cm = FindResource("cmGraph") as ContextMenu;

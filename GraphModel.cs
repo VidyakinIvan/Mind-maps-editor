@@ -16,6 +16,10 @@ namespace Mind_maps_editor
         {
             graph = new Graph();
         }
+        public void AddNode(string id)
+        {
+            Graph.AddNode(id);
+        }
         public Graph Graph
         {
             get => graph;
