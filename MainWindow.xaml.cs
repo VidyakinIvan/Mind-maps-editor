@@ -28,13 +28,6 @@ namespace Mind_maps_editor
             gViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private void btnGraph_Click(object sender, RoutedEventArgs e)
-        {
-            btnGraph.Visibility = Visibility.Hidden;
-            btnTable.Visibility = Visibility.Hidden;
-            wfh.Visibility = Visibility.Visible;
-        }
-
         private void gViewer_Click(object sender, EventArgs e)
         {
             
@@ -47,6 +40,12 @@ namespace Mind_maps_editor
                     cm.IsOpen = true;
                 }
             }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            //wfh.Visibility = Visibility.Visible;
+            wfh.Visibility = !wfh.IsVisible ? Visibility.Visible : Visibility.Hidden;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Msagl.Drawing;
+using System.Diagnostics;
 
 namespace Mind_maps_editor
 {
@@ -38,6 +39,7 @@ namespace Mind_maps_editor
                 return testCommand ??
                     (testCommand = new RelayCommand(obj =>
                     {
+                        Debug.WriteLine("TestCommand");
                         graphModel.Graph.AddNode(new Node(id.ToString()));
                         id++;
                     }));
