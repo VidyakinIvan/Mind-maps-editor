@@ -44,7 +44,7 @@
             </MenuItem>
         </Menu>
         <WindowsFormsHost Name="wfh" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4" >
-            <gv:GViewer x:Name="gViewer" Click="gViewer_Click"></gv:GViewer>
+            <gv:GViewer x:Name="GViewer" Click="GViewer_Click"></gv:GViewer>
         </WindowsFormsHost>
     </Grid>
 </Window>

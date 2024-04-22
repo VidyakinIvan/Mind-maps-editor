@@ -24,16 +24,15 @@ namespace Mind_maps_editor
             InitializeComponent();
             wfh.Visibility = Visibility.Hidden;
             DataContext = new ViewModel();
-            gViewer.ToolBarIsVisible = false;
-            gViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
+            GViewer.ToolBarIsVisible = false;
+            _ = GViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        private void gViewer_Click(object sender, EventArgs e)
+        private void GViewer_Click(object sender, EventArgs e)
         {
             if (e is MouseEventArgs me && me.Button == System.Windows.Forms.MouseButtons.Right)
             {
-                ContextMenu? cm = FindResource("cmGraph") as ContextMenu;
-                if (cm != null)
+                if (FindResource("cmGraph") is ContextMenu cm)
                 {
                     cm.PlacementTarget = sender as System.Windows.Controls.Button;
                     cm.IsOpen = true;
