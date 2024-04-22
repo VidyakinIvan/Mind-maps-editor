@@ -36,9 +36,10 @@
             <MenuItem Header="Правка">
                 <MenuItem Header="Отменить"/>
                 <MenuItem Header="Повторить"/>
+                <MenuItem Header="Очистить" Command="{Binding ClearCommand}"/>
             </MenuItem>
             <MenuItem Header="Вид">
-                <MenuItem Header="Граф" Click="MenuItem_Click"/>
+                <MenuItem Header="Граф" Click="MenuItemGraph_Click"/>
                 <MenuItem Header="Таблица"/>
             </MenuItem>
         </Menu>

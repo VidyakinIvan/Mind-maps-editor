@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Msagl.Drawing;
 using System.Diagnostics;
+using System.Security.Principal;
 
 namespace Mind_maps_editor
 {
@@ -17,7 +18,8 @@ namespace Mind_maps_editor
         private IModel? model;
         private int id = 0;
         private Graph? graph1;
-        private RelayCommand? testCommand;
+        private RelayCommand? addEntityCommand;
+        private RelayCommand? clearCommand;
         #endregion
         #region Properties
         public Graph? Graph
@@ -44,8 +46,8 @@ namespace Mind_maps_editor
         {
             get
             {
-                return testCommand ??
-                    (testCommand = new RelayCommand(obj =>
+                return addEntityCommand ??
+                    (addEntityCommand = new RelayCommand(obj =>
                     {
                         model?.AddEntity(id.ToString());
                         id++;
@@ -57,10 +59,10 @@ namespace Mind_maps_editor
         {
             get
             {
-                return testCommand ?? (testCommand = new RelayCommand(obj =>
+                return clearCommand ?? (clearCommand = new RelayCommand(obj =>
                 {
-                    model = new GraphModel();
-                    model.Graph = new Graph();
+                    model?.Clear();
+                    Graph = (model as GraphModel)?.Graph;
                     OnPropertyChanged(nameof(Graph));
                 }));
             }

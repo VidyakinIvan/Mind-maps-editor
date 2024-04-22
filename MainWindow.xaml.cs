@@ -41,7 +41,7 @@ namespace Mind_maps_editor
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void MenuItemGraph_Click(object sender, RoutedEventArgs e)
         {
             (DataContext as ViewModel)?.GraphLayout();
             wfh.Visibility = !wfh.IsVisible ? Visibility.Visible : Visibility.Hidden;

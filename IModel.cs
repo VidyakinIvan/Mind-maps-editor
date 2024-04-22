@@ -10,6 +10,6 @@ namespace Mind_maps_editor
     internal interface IModel
     {
         public void AddEntity(string id);
-        public Graph Graph { get; set; }
+        public void Clear();
     }
 }

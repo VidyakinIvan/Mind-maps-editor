@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -16,10 +17,6 @@ namespace Mind_maps_editor
         {
             graph = new Graph();
         }
-        public void AddEntity(string id)
-        {
-            Graph.AddNode(id);
-        }
         public Graph Graph
         {
             get => graph;
@@ -27,6 +24,14 @@ namespace Mind_maps_editor
             {
                 graph = value;
             }
+        }
+        public void AddEntity(string id)
+        {
+            Graph.AddNode(id);
+        }
+        public void Clear()
+        {
+            Graph = new Graph();
         }
     }
 }
