@@ -44,7 +44,6 @@ namespace Mind_maps_editor
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //wfh.Visibility = Visibility.Visible;
             wfh.Visibility = !wfh.IsVisible ? Visibility.Visible : Visibility.Hidden;
         }
     }
