@@ -7,9 +7,9 @@ using QuikGraph;
 
 namespace Mind_maps_editor
 {
-    internal class MindEdge(MindVertex source, MindVertex target): IEdge<MindVertex>
+    internal class MindEdge(MindNode source, MindNode target): IEdge<MindNode>
     {
-        public MindVertex Source { get; set; } = source;
-        public MindVertex Target { get; set; } = target;
+        public MindNode Source { get; set; } = source;
+        public MindNode Target { get; set; } = target;
     }
 }

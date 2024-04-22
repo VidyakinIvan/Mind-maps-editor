@@ -48,6 +48,7 @@ namespace Mind_maps_editor
                     {
                         model?.AddEntity(id.ToString());
                         id++;
+                        Graph = (model as GraphModel)?.Graph;
                         OnPropertyChanged(nameof(Graph));
                     });
             }

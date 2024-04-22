@@ -13,22 +13,22 @@ namespace Mind_maps_editor
     internal class GraphModel : IModel
     {
         #region Fields
-        private Graph graph = new();
+        private MindGraph graph = new();
         #endregion
         #region Properties
         public Graph Graph
         {
-            get => graph;
+            get => graph.MSAGLConvert();
             set
             {
-                graph = value;
+                graph = graph.MindGraphConvert(value);
             }
         }
         #endregion
         #region Methods
         public void AddEntity(string id)
         {
-            Graph.AddNode(id);
+            graph.AddNode(id);
         }
         public void Clear()
         {
