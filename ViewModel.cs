@@ -13,17 +13,14 @@ namespace Mind_maps_editor
 {
     internal class ViewModel : INotifyPropertyChanged
     {
-        private GraphModel graphModel;
+        #region Fields
+        private IModel? model;
         private int id = 0;
-        private Graph graph1;
+        private Graph? graph1;
         private RelayCommand? testCommand;
-        public ViewModel()
-        {
-            graph1 = new Graph();
-            graphModel = new GraphModel();
-            Graph = graphModel.Graph;
-        }
-        public Graph Graph
+        #endregion
+        #region Properties
+        public Graph? Graph
         {
             get => graph1;
             set
@@ -32,24 +29,50 @@ namespace Mind_maps_editor
                 OnPropertyChanged(nameof(Graph));
             }
         }
-        public RelayCommand? TestCommand
+        #endregion
+        #region LayoutConstructors
+        public void GraphLayout()
+        {
+            if (model is null)
+                model = new GraphModel();
+            if (Graph is null)
+                Graph = (model as GraphModel)?.Graph;
+        }
+        #endregion
+        #region RelayCommands
+        public RelayCommand? AddEntityCommand
         {
             get
             {
                 return testCommand ??
                     (testCommand = new RelayCommand(obj =>
                     {
-                        graphModel.Graph.AddNode(new Node(id.ToString()));
+                        model?.AddEntity(id.ToString());
                         id++;
                         OnPropertyChanged(nameof(Graph));
                     }));
             }
         }
+        public RelayCommand? ClearCommand
+        {
+            get
+            {
+                return testCommand ?? (testCommand = new RelayCommand(obj =>
+                {
+                    model = new GraphModel();
+                    model.Graph = new Graph();
+                    OnPropertyChanged(nameof(Graph));
+                }));
+            }
+        }
+        #endregion
+        #region PropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+        #endregion
     }
 }

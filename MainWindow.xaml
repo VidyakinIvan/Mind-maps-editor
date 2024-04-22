@@ -10,7 +10,7 @@
     <Window.Resources>
         <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
         <ContextMenu x:Key="cmGraph">
-            <MenuItem Header="Добавить узел" Command="{Binding Source={StaticResource Proxy}, Path=Data.TestCommand}"/>
+            <MenuItem Header="Добавить узел" Command="{Binding Source={StaticResource Proxy}, Path=Data.AddEntityCommand}"/>
             <MenuItem Header="Добавить связь"/>
         </ContextMenu>
     </Window.Resources>

@@ -9,14 +9,14 @@ using Microsoft.Msagl.Drawing;
 
 namespace Mind_maps_editor
 {
-    internal class GraphModel
+    internal class GraphModel : IModel
     {
         private Graph graph;
         public GraphModel()
         {
             graph = new Graph();
         }
-        public void AddNode(string id)
+        public void AddEntity(string id)
         {
             Graph.AddNode(id);
         }
