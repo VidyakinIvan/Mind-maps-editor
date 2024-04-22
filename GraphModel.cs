@@ -12,11 +12,10 @@ namespace Mind_maps_editor
 {
     internal class GraphModel : IModel
     {
-        private Graph graph;
-        public GraphModel()
-        {
-            graph = new Graph();
-        }
+        #region Fields
+        private Graph graph = new();
+        #endregion
+        #region Properties
         public Graph Graph
         {
             get => graph;
@@ -25,13 +24,16 @@ namespace Mind_maps_editor
                 graph = value;
             }
         }
+        #endregion
+        #region Methods
         public void AddEntity(string id)
         {
             Graph.AddNode(id);
         }
         public void Clear()
         {
-            Graph = new Graph();
+            Graph = new();
         }
+        #endregion
     }
 }
