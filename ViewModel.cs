@@ -16,7 +16,8 @@ namespace Mind_maps_editor
     {
         #region Fields
         private IModel? model;
-        private int id = 0;
+        private int id;
+        private ICreateEntityDialog createEntityDialog;
         private Graph? graph1;
         private RelayCommand? addEntityCommand;
         private RelayCommand? clearCommand;
@@ -32,6 +33,10 @@ namespace Mind_maps_editor
             }
         }
         #endregion
+        public ViewModel(ICreateEntityDialog createEntityDialog)
+        {
+            this.createEntityDialog = createEntityDialog;
+        }
         #region LayoutConstructors
         public void GraphLayout()
         {
@@ -46,7 +51,14 @@ namespace Mind_maps_editor
             {
                 return addEntityCommand ??= new RelayCommand(obj =>
                     {
-                        model?.AddEntity(id.ToString());
+                        if (createEntityDialog.ShowCreateDialog() == true && !string.IsNullOrEmpty(createEntityDialog.EntityId))
+                        {
+                            model?.AddEntity(createEntityDialog.EntityId);
+                        }
+                        else
+                        {
+                            model?.AddEntity((id).ToString());
+                        }
                         id++;
                         Graph = (model as GraphModel)?.Graph;
                         OnPropertyChanged(nameof(Graph));

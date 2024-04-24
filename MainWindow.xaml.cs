@@ -24,7 +24,7 @@ namespace Mind_maps_editor
         {
             InitializeComponent();
             wfh.Visibility = Visibility.Hidden;
-            DataContext = new ViewModel();
+            DataContext = new ViewModel(new CreateEntityWindow());
             GViewer.ToolBarIsVisible = false;
             _ = GViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
         }
