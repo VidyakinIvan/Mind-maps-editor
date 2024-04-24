@@ -9,15 +9,18 @@ namespace Mind_maps_editor
 {
     public class RelayCommand(Action<object?> execute, Func<object?, bool>? canExecute = null) : ICommand
     {
+        #region Fields
         private readonly Action<object?> execute = execute;
         private readonly Func<object?, bool>? canExecute = canExecute;
-
+        #endregion
+        #region Events
         public event EventHandler? CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
-
+        #endregion
+        #region Methods
         public bool CanExecute(object? parameter)
         {
             return this.canExecute == null || this.canExecute(parameter);
@@ -27,5 +30,6 @@ namespace Mind_maps_editor
         {
             this.execute(parameter);
         }
+        #endregion
     }
 }

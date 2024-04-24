@@ -9,7 +9,9 @@ namespace Mind_maps_editor
 {
     internal class MindEdge(MindNode source, MindNode target): IEdge<MindNode>
     {
+        #region Properties
         public MindNode Source { get; set; } = source;
         public MindNode Target { get; set; } = target;
+        #endregion
     }
 }

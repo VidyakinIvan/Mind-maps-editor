@@ -14,6 +14,7 @@ namespace Mind_maps_editor
 {
     internal class MindGraph: BidirectionalGraph<MindNode, MindEdge>
     {
+        #region NodeMethods
         public void AddNode(string id)
         {
             this.AddVertex(new MindNode(id));
@@ -22,6 +23,8 @@ namespace Mind_maps_editor
         {
             return this.Vertices.FirstOrDefault(node => node.Id == id) ?? new MindNode(id);
         }
+        #endregion
+        #region ConvertMethods
         public Graph MSAGLConvert()
         {
             Graph msaglGraph = new();
@@ -48,5 +51,6 @@ namespace Mind_maps_editor
             }
             return mindGraph;
         }
+        #endregion
     }
 }

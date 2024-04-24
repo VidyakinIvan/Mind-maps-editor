@@ -9,7 +9,9 @@ namespace Mind_maps_editor
 {
     internal interface IModel
     {
+        #region Methods
         public void AddEntity(string id);
         public void Clear();
+        #endregion
     }
 }

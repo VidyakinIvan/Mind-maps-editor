@@ -19,6 +19,7 @@ namespace Mind_maps_editor
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Constructors
         public MainWindow()
         {
             InitializeComponent();
@@ -27,7 +28,8 @@ namespace Mind_maps_editor
             GViewer.ToolBarIsVisible = false;
             _ = GViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
         }
-
+        #endregion
+        #region EventHandlers
         private void GViewer_Click(object sender, EventArgs e)
         {
             if (e is MouseEventArgs me && me.Button == System.Windows.Forms.MouseButtons.Right)
@@ -39,11 +41,11 @@ namespace Mind_maps_editor
                 }
             }
         }
-
         private void MenuItemGraph_Click(object sender, RoutedEventArgs e)
         {
             (DataContext as ViewModel)?.GraphLayout();
             wfh.Visibility = !wfh.IsVisible ? Visibility.Visible : Visibility.Hidden;
         }
+        #endregion
     }
 }
