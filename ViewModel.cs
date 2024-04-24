@@ -33,10 +33,12 @@ namespace Mind_maps_editor
             }
         }
         #endregion
+        #region Constructor
         public ViewModel(ICreateEntityDialog createEntityDialog)
         {
             this.createEntityDialog = createEntityDialog;
         }
+        #endregion
         #region LayoutConstructors
         public void GraphLayout()
         {
