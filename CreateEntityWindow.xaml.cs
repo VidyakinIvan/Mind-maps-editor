@@ -20,7 +20,10 @@ namespace Mind_maps_editor
     /// </summary>
     public partial class CreateEntityWindow : Window, ICreateEntityDialog
     {
+        #region Fields
         private new bool? DialogResult = false;
+        #endregion
+        #region Properties
         public string EntityId
         {
             get => EntityIdTextBox.Text;
@@ -31,16 +34,21 @@ namespace Mind_maps_editor
             get => this.DialogResult;
             set => this.DialogResult = value;
         }
+        #endregion
+        #region Constructor
         public CreateEntityWindow()
         {
             InitializeComponent();
         }
+        #endregion
+        #region Methods
         public bool? ShowCreateDialog()
         {
             ShowDialog();
             return CreateDialogResult;
         }
-
+        #endregion
+        #region Events
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
             CreateDialogResult = true;
@@ -60,5 +68,6 @@ namespace Mind_maps_editor
             else
                 btnOk.IsEnabled = true;
         }
+        #endregion
     }
 }
