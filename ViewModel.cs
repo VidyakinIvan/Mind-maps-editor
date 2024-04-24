@@ -16,7 +16,6 @@ namespace Mind_maps_editor
     {
         #region Fields
         private IModel? model;
-        private int id;
         private ICreateEntityDialog createEntityDialog;
         private Graph? graph1;
         private RelayCommand? addEntityCommand;
@@ -57,11 +56,6 @@ namespace Mind_maps_editor
                         {
                             model?.AddEntity(createEntityDialog.EntityId);
                         }
-                        else
-                        {
-                            model?.AddEntity((id).ToString());
-                        }
-                        id++;
                         Graph = (model as GraphModel)?.Graph;
                         OnPropertyChanged(nameof(Graph));
                     });
