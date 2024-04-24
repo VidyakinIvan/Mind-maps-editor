@@ -17,7 +17,6 @@ namespace Mind_maps_editor
         public void AddNode(string id)
         {
             this.AddVertex(new MindNode(id));
-            Debug.Write(this.Vertices.Count()+" ");
         }
         public MindNode GetNode(string id)
         {
