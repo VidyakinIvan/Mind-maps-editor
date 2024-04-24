@@ -52,5 +52,13 @@ namespace Mind_maps_editor
             e.Cancel = true;
             Visibility = Visibility.Hidden;
         }
+
+        private void EntityIdTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(EntityIdTextBox.Text))
+                btnOk.IsEnabled = false;
+            else
+                btnOk.IsEnabled = true;
+        }
     }
 }

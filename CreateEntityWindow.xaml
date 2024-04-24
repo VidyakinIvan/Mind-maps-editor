@@ -5,20 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mind_maps_editor"
         mc:Ignorable="d"
-        Title="CreateEntityWindow" Height="100" Width="400" Closing="Window_Closing">
+        Title="Создание ментальной сущности" Height="120" Width="400" ResizeMode="NoResize" Closing="Window_Closing">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.5*"/>
             <RowDefinition Height="0.5*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="0.2*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.05*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.05*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="1">Введите Id:</TextBlock>
+        <TextBox Name="EntityIdTextBox" Grid.Row="1" Grid.Column="1" MinWidth="250" TextChanged="EntityIdTextBox_TextChanged"/>
 
-        <TextBlock>Введите Id:</TextBlock>
-        <TextBox Name="EntityIdTextBox" Grid.Row="1" MinWidth="250">Id</TextBox>
-
-        <WrapPanel Grid.Row="2" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button IsDefault="True" Click="Accept_Click" MinWidth="60" Margin="0,0,10,0">OK</Button>
-            <Button IsCancel="True" MinWidth="60">Отмена</Button>
+        <WrapPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Name="btnOk" IsDefault="True" Click="Accept_Click" Width="60" Margin="0,0,10,0" IsEnabled="False">OK</Button>
+            <Button IsCancel="True" Width="60">Отмена</Button>
         </WrapPanel>
     </Grid>
 </Window>
