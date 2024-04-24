@@ -4,13 +4,47 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mind_maps_editor"
-        Loaded="Window_Loaded"
-        xmlns:gv="clr-namespace:Microsoft.Msagl.GraphViewerGdi;assembly=Microsoft.Msagl.GraphViewerGDI"
+        xmlns:gv="clr-namespace:Microsoft.Msagl.GraphViewerGdi;assembly=Microsoft.Msagl.GraphViewerGDI" d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
+    <Window.Resources>
+        <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
+        <ContextMenu x:Key="cmGraph">
+            <MenuItem Header="Добавить узел" Command="{Binding Source={StaticResource Proxy}, Path=Data.AddEntityCommand}"/>
+            <MenuItem Header="Добавить связь"/>
+        </ContextMenu>
+    </Window.Resources>
     <Grid>
-        <WindowsFormsHost>
-            <gv:GViewer x:Name="gViewer" Click="GraphNodeClicked"></gv:GViewer>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="17"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Menu Grid.ColumnSpan="3" Grid.Row="0" VerticalAlignment="Top">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Открыть"/>
+                <MenuItem Header="Сохранить"/>
+                <MenuItem Header="Выход"/>
+            </MenuItem>
+            <MenuItem Header="Правка">
+                <MenuItem Header="Отменить"/>
+                <MenuItem Header="Повторить"/>
+                <MenuItem Header="Очистить" Command="{Binding ClearCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Вид">
+                <MenuItem Header="Граф" Click="MenuItemGraph_Click"/>
+                <MenuItem Header="Таблица"/>
+            </MenuItem>
+        </Menu>
+        <WindowsFormsHost Name="wfh" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4" >
+            <gv:GViewer x:Name="GViewer" Click="GViewer_Click"></gv:GViewer>
         </WindowsFormsHost>
     </Grid>
 </Window>
