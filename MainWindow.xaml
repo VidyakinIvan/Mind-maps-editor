@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Mind_maps_editor"
         xmlns:gv="clr-namespace:Microsoft.Msagl.GraphViewerGdi;assembly=Microsoft.Msagl.GraphViewerGDI" d:DataContext="{d:DesignInstance Type=local:ViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" Closing="Window_Closing">
     <Window.Resources>
         <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
         <ContextMenu x:Key="cmGraph">

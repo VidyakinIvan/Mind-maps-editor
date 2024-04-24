@@ -47,5 +47,10 @@ namespace Mind_maps_editor
             wfh.Visibility = !wfh.IsVisible ? Visibility.Visible : Visibility.Hidden;
         }
         #endregion
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Environment.Exit(0);
+        }
     }
 }
