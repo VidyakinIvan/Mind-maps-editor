@@ -49,7 +49,7 @@ namespace Mind_maps_editor
         }
         #endregion
         #region Events
-        private void Accept_Click(object sender, RoutedEventArgs e)
+        private void btnOk_Click(object sender, RoutedEventArgs e)
         {
             CreateDialogResult = true;
             Close();
@@ -67,6 +67,10 @@ namespace Mind_maps_editor
                 btnOk.IsEnabled = false;
             else
                 btnOk.IsEnabled = true;
+        }
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
         #endregion
     }
