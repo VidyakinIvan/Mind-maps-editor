@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -12,6 +11,7 @@ using Microsoft.Msagl.Drawing;
 using System.Windows.Forms;
 using Microsoft.Msagl.GraphViewerGdi;
 using System.Diagnostics;
+using Microsoft.VisualBasic.Logging;
 namespace Mind_maps_editor
 {
     /// <summary>
@@ -19,25 +19,38 @@ namespace Mind_maps_editor
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Constructors
         public MainWindow()
         {
             InitializeComponent();
+            wfh.Visibility = Visibility.Hidden;
+            DataContext = new ViewModel(new CreateEntityWindow());
+            GViewer.ToolBarIsVisible = false;
+            _ = GViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
         }
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        #endregion
+        #region EventHandlers
+        private void GViewer_Click(object sender, EventArgs e)
         {
-            Graph graph = new();
-            graph.AddNode("A");
-            this.gViewer.Graph = graph;
-        }
-        private void GraphNodeClicked(object sender, EventArgs e)
-        {
-            Debug.WriteLine("GraphNodeClicked");
-            if (sender is not GViewer gViewer || gViewer?.SelectedObject is not Node node)
+            if (e is MouseEventArgs me && me.Button == System.Windows.Forms.MouseButtons.Right)
             {
-                return;
+                if (FindResource("cmGraph") is ContextMenu cm)
+                {
+                    cm.PlacementTarget = sender as System.Windows.Controls.Button;
+                    cm.IsOpen = true;
+                }
             }
-            Debug.WriteLine(node.Label.Text);
-            System.Windows.MessageBox.Show(node.Label.Text);
+        }
+        private void MenuItemGraph_Click(object sender, RoutedEventArgs e)
+        {
+            (DataContext as ViewModel)?.GraphLayout();
+            wfh.Visibility = !wfh.IsVisible ? Visibility.Visible : Visibility.Hidden;
+        }
+        #endregion
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }
