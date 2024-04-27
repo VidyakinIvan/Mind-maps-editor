@@ -11,6 +11,7 @@ namespace Mind_maps_editor
     {
         #region Methods
         public void AddEntity(string id);
+        public void AddEdge(string sourceId, string targetId);
         public void Clear();
         #endregion
     }

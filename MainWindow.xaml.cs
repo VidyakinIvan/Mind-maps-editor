@@ -32,16 +32,27 @@ namespace Mind_maps_editor
         #region EventHandlers
         private void GViewer_Click(object sender, EventArgs e)
         {
-            if (e is MouseEventArgs me && me.Button == System.Windows.Forms.MouseButtons.Right)
+            if (e is MouseEventArgs me)
             {
-                if (FindResource("cmGraph") is ContextMenu cm)
+                if (me.Button == System.Windows.Forms.MouseButtons.Right)
                 {
+                    if (FindResource("cmGraph") is ContextMenu cm)
+                    {
+                        if (GViewer.SelectedObject is Node node)
+                            (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Visible;
+                        else
+                            (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Collapsed;
+                        cm.PlacementTarget = sender as System.Windows.Controls.Button;
+                        cm.IsOpen = true;
+                    }
+                }
+                else if (me.Button == System.Windows.Forms.MouseButtons.Left)
+                {
+                    (DataContext as ViewModel)?.SelectionDisabled();
                     if (GViewer.SelectedObject is Node node)
-                        (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Visible;
-                    else
-                        (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Collapsed;
-                    cm.PlacementTarget = sender as System.Windows.Controls.Button;
-                    cm.IsOpen = true;
+                    {
+                        (DataContext as ViewModel)?.SelectionChanged(node);
+                    }
                 }
             }
         }

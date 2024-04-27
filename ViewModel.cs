@@ -9,19 +9,23 @@ using System.Threading.Tasks;
 using Microsoft.Msagl.Drawing;
 using System.Diagnostics;
 using System.Security.Principal;
+using System.Security.Policy;
 
 namespace Mind_maps_editor
 {
     internal class ViewModel : INotifyPropertyChanged
     {
         #region Fields
+        private Node? selectedNode;
         private IModel? model;
         private ICreateEntityDialog createEntityDialog;
         private Graph? graph1;
         private RelayCommand? addEntityCommand;
+        private RelayCommand? addEdgeCommand;
         private RelayCommand? clearCommand;
         #endregion
         #region Properties
+        public Node? Node { get; set; }
         public Graph? Graph
         {
             get => graph1;
@@ -61,6 +65,21 @@ namespace Mind_maps_editor
                     });
             }
         }
+        public RelayCommand? AddEdgeCommand
+        {
+            get
+            {
+                return addEdgeCommand ??= new RelayCommand(obj =>
+                {
+                    if (selectedNode != null && Node != null)
+                    {
+                        model?.AddEdge(selectedNode.Id, Node.Id);
+                    }
+                    Graph = (model as GraphModel)?.Graph;
+                    OnPropertyChanged(nameof(Graph));
+                });
+            }
+        }
         public RelayCommand? ClearCommand
         {
             get
@@ -74,6 +93,28 @@ namespace Mind_maps_editor
             }
         }
         #endregion
+        public void SelectionDisabled()
+        {
+            if (selectedNode != null)
+            {
+                selectedNode.Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
+                selectedNode.Attr.LineWidth = 1;
+                selectedNode = null;
+                OnPropertyChanged(nameof(Graph));
+            }
+        }
+        public void SelectionChanged(Node node)
+        {
+            selectedNode = node;
+            selectedNode.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
+            Debug.WriteLine(selectedNode.Attr);
+            Debug.WriteLine(selectedNode.Attr.Styles);
+            foreach (var style in selectedNode.Attr.Styles)
+            {
+                Debug.WriteLine(style);
+            }
+            OnPropertyChanged(nameof(Graph));
+        }
         #region PropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
