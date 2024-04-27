@@ -93,6 +93,7 @@ namespace Mind_maps_editor
             }
         }
         #endregion
+        #region ViewMethods
         public void SelectionDisabled()
         {
             if (selectedNode != null)
@@ -115,6 +116,7 @@ namespace Mind_maps_editor
             }
             OnPropertyChanged(nameof(Graph));
         }
+        #endregion
         #region PropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
