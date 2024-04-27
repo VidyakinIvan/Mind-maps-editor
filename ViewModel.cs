@@ -108,12 +108,6 @@ namespace Mind_maps_editor
         {
             selectedNode = node;
             selectedNode.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
-            Debug.WriteLine(selectedNode.Attr);
-            Debug.WriteLine(selectedNode.Attr.Styles);
-            foreach (var style in selectedNode.Attr.Styles)
-            {
-                Debug.WriteLine(style);
-            }
             OnPropertyChanged(nameof(Graph));
         }
         #endregion
