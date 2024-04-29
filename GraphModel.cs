@@ -34,6 +34,10 @@ namespace Mind_maps_editor
         {
             graph.AddEdge(new MindEdge(graph.GetNode(sourceId), graph.GetNode(targetId)));
         }
+        public bool ContainsEntity(string id)
+        {
+            return graph.Vertices.Any(node => node.Id == id);
+        }
         public void Clear()
         {
             Graph = new();

@@ -56,9 +56,12 @@ namespace Mind_maps_editor
             {
                 return addEntityCommand ??= new RelayCommand(obj =>
                     {
-                        if (createEntityDialog.ShowCreateDialog() == true && !string.IsNullOrEmpty(createEntityDialog.EntityId))
+                        if (model is not null && createEntityDialog.ShowCreateDialog() == true && !string.IsNullOrEmpty(createEntityDialog.EntityId))
                         {
-                            model?.AddEntity(createEntityDialog.EntityId);
+                            if (model.ContainsEntity(createEntityDialog.EntityId))
+                                MessageBox.Show("Сущность уже существует");
+                            else
+                                model?.AddEntity(createEntityDialog.EntityId);
                         }
                         Graph = (model as GraphModel)?.Graph;
                         OnPropertyChanged(nameof(Graph));
