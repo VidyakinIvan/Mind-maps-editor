@@ -17,6 +17,7 @@ namespace Mind_maps_editor
     {
         #region Fields
         private Node? selectedNode;
+        private Node? activeNode;
         private IModel? model;
         private ICreateEntityDialog createEntityDialog;
         private Graph? graph1;
@@ -25,7 +26,6 @@ namespace Mind_maps_editor
         private RelayCommand? clearCommand;
         #endregion
         #region Properties
-        public Node? Node { get; set; }
         public Graph? Graph
         {
             get => graph1;
@@ -68,15 +68,16 @@ namespace Mind_maps_editor
                     });
             }
         }
-        public RelayCommand? AddEdgeCommand
+        public RelayCommand? AddRelationCommand
         {
             get
             {
                 return addEdgeCommand ??= new RelayCommand(obj =>
                 {
-                    if (selectedNode != null && Node != null)
+                    if (selectedNode is not null && activeNode is not null)
                     {
-                        model?.AddEdge(selectedNode.Id, Node.Id);
+                        model?.AddEdge(selectedNode.Id, activeNode.Id);
+                        SelectionDisabled();
                     }
                     Graph = (model as GraphModel)?.Graph;
                     OnPropertyChanged(nameof(Graph));
@@ -112,6 +113,10 @@ namespace Mind_maps_editor
             selectedNode = node;
             selectedNode.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
             OnPropertyChanged(nameof(Graph));
+        }
+        public void SetActiveNode(Node node)
+        {
+            activeNode = node;
         }
         #endregion
         #region PropertyChanged

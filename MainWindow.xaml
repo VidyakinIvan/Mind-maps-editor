@@ -11,7 +11,7 @@
         <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
         <ContextMenu x:Key="cmGraph">
             <MenuItem Name="AddNode" Header="Добавить узел" Command="{Binding Source={StaticResource Proxy}, Path=Data.AddEntityCommand}"/>
-            <MenuItem Name="AddEdge" Header="Добавить связь" Visibility="Collapsed"/>
+            <MenuItem Name="AddEdge" Header="Добавить связь" Command="{Binding Source={StaticResource Proxy}, Path=Data.AddRelationCommand}"  Visibility="Collapsed"/>
         </ContextMenu>
     </Window.Resources>
     <Grid>

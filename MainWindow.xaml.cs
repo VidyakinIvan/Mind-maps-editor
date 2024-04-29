@@ -39,7 +39,10 @@ namespace Mind_maps_editor
                     if (FindResource("cmGraph") is ContextMenu cm)
                     {
                         if (GViewer.SelectedObject is Node node)
+                        {
                             (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Visible;
+                            (DataContext as ViewModel)?.SetActiveNode(node);
+                        }
                         else
                             (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Collapsed;
                         cm.PlacementTarget = sender as System.Windows.Controls.Button;
