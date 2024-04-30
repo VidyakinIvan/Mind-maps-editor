@@ -32,12 +32,34 @@ namespace Mind_maps_editor
         #region EventHandlers
         private void GViewer_Click(object sender, EventArgs e)
         {
-            if (e is MouseEventArgs me && me.Button == System.Windows.Forms.MouseButtons.Right)
+            if (e is MouseEventArgs me)
             {
-                if (FindResource("cmGraph") is ContextMenu cm)
+                if (me.Button == System.Windows.Forms.MouseButtons.Right)
                 {
-                    cm.PlacementTarget = sender as System.Windows.Controls.Button;
-                    cm.IsOpen = true;
+                    if (FindResource("cmGraph") is ContextMenu cm)
+                    {
+                        if (GViewer.SelectedObject is Node node)
+                        {
+                            (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Visible;
+                            (cm.Items.GetItemAt(2) as MenuItem)!.Visibility = Visibility.Visible;
+                            (DataContext as ViewModel)?.SetActiveNode(node);
+                        }
+                        else
+                        {
+                            (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Collapsed;
+                            (cm.Items.GetItemAt(2) as MenuItem)!.Visibility = Visibility.Collapsed;
+                        }
+                        cm.PlacementTarget = sender as System.Windows.Controls.Button;
+                        cm.IsOpen = true;
+                    }
+                }
+                else if (me.Button == System.Windows.Forms.MouseButtons.Left)
+                {
+                    (DataContext as ViewModel)?.SelectionDisabled();
+                    if (GViewer.SelectedObject is Node node)
+                    {
+                        (DataContext as ViewModel)?.SelectionChanged(node);
+                    }
                 }
             }
         }
@@ -46,11 +68,10 @@ namespace Mind_maps_editor
             (DataContext as ViewModel)?.GraphLayout();
             wfh.Visibility = !wfh.IsVisible ? Visibility.Visible : Visibility.Hidden;
         }
-        #endregion
-
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Environment.Exit(0);
         }
+        #endregion
     }
 }
