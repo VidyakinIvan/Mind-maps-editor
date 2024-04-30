@@ -44,6 +44,7 @@ namespace Mind_maps_editor
         #region Methods
         public bool? ShowCreateDialog()
         {
+            EntityIdTextBox.Text = string.Empty;
             ShowDialog();
             return CreateDialogResult;
         }
