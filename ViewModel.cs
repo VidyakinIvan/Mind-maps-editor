@@ -22,6 +22,7 @@ namespace Mind_maps_editor
         private ICreateEntityDialog createEntityDialog;
         private Graph? graph1;
         private RelayCommand? addEntityCommand;
+        private RelayCommand? removeEntityCommand;
         private RelayCommand? addEdgeCommand;
         private RelayCommand? clearCommand;
         #endregion
@@ -66,6 +67,22 @@ namespace Mind_maps_editor
                         Graph = (model as GraphModel)?.Graph;
                         OnPropertyChanged(nameof(Graph));
                     });
+            }
+        }
+        public RelayCommand? RemoveEntityCommand
+        {
+            get
+            {
+                return removeEntityCommand ??= new RelayCommand(obj =>
+                {
+                    if (activeNode is not null)
+                    {
+                        model?.RemoveEntity(activeNode.Id);
+                        SelectionDisabled();
+                    }
+                    Graph = (model as GraphModel)?.Graph;
+                    OnPropertyChanged(nameof(Graph));
+                });
             }
         }
         public RelayCommand? AddRelationCommand

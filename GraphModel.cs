@@ -30,6 +30,10 @@ namespace Mind_maps_editor
         {
             graph.AddNode(id);
         }
+        public void RemoveEntity(string id)
+        {
+            graph.RemoveVertex(graph.GetNode(id));
+        }
         public void AddEdge(string sourceId, string targetId)
         {
             graph.AddEdge(new MindEdge(graph.GetNode(sourceId), graph.GetNode(targetId)));
