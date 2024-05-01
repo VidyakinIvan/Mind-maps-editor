@@ -10,12 +10,17 @@ using Microsoft.Msagl.Drawing;
 
 namespace Mind_maps_editor
 {
-    internal class GraphModel : IModel
+    internal class GraphModel : IModel<string>
     {
         #region Fields
-        private MindGraph graph = new();
+        public LayerConstraints layerConstraints;
+        private MindGraph graph;
         #endregion
         #region Properties
+        public List<string> Entities
+        {
+            get;
+        }
         public Graph Graph
         {
             get => graph.MSAGLConvert();
@@ -25,14 +30,22 @@ namespace Mind_maps_editor
             }
         }
         #endregion
+        public GraphModel()
+        {
+            graph = new();
+            layerConstraints = Graph.LayerConstraints;
+            Entities = new();
+        }
         #region Methods
         public void AddEntity(string id)
         {
             graph.AddNode(id);
+            Entities.Add(id);
         }
         public void RemoveEntity(string id)
         {
             graph.RemoveVertex(graph.GetNode(id));
+            Entities.Remove(id);
         }
         public void AddEdge(string sourceId, string targetId)
         {
@@ -45,6 +58,10 @@ namespace Mind_maps_editor
         public void Clear()
         {
             Graph = new();
+        }
+        public void Regularize()
+        {
+            
         }
         #endregion
     }

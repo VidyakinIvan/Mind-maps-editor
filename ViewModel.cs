@@ -10,6 +10,7 @@ using Microsoft.Msagl.Drawing;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Security.Policy;
+using Microsoft.Msagl.Prototype.LayoutEditing;
 
 namespace Mind_maps_editor
 {
@@ -18,7 +19,7 @@ namespace Mind_maps_editor
         #region Fields
         private Node? selectedNode;
         private Node? activeNode;
-        private IModel? model;
+        private IModel<string>? model;
         private ICreateEntityDialog createEntityDialog;
         private Graph? graph1;
         private RelayCommand? addEntityCommand;
@@ -62,10 +63,17 @@ namespace Mind_maps_editor
                             if (model.ContainsEntity(createEntityDialog.EntityId))
                                 MessageBox.Show("Сущность уже существует");
                             else
-                                model?.AddEntity(createEntityDialog.EntityId);
+                            {
+                                model.AddEntity(createEntityDialog.EntityId);
+                                Graph graph = (model as GraphModel)!.Graph;
+                                (model as GraphModel)!.layerConstraints.RemoveAllConstraints();
+                                List<Node> nodes = model.Entities.Select(nodeid => graph.FindNode(nodeid)).ToList();
+                                (model as GraphModel)!.layerConstraints.AddSameLayerNeighbors(nodes);
+                                graph.LayerConstraints = (model as GraphModel)!.layerConstraints;
+                                Graph = graph;
+                                OnPropertyChanged(nameof(Graph));
+                            }    
                         }
-                        Graph = (model as GraphModel)?.Graph;
-                        OnPropertyChanged(nameof(Graph));
                     });
             }
         }
