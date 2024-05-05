@@ -48,6 +48,7 @@ namespace Mind_maps_editor
         public void GraphLayout()
         {
             model ??= new GraphModel();
+            model.AddEntity("Корень", 0);
             Graph ??= (model as GraphModel)?.Graph;
         }
         #endregion
@@ -58,16 +59,18 @@ namespace Mind_maps_editor
             {
                 return addEntityCommand ??= new RelayCommand(obj =>
                     {
-                        if (model is not null && createEntityDialog.ShowCreateDialog() == true && !string.IsNullOrEmpty(createEntityDialog.EntityId))
+                        if (model is not null && createEntityDialog.ShowCreateDialog() == true && !string.IsNullOrEmpty(createEntityDialog.EntityId) && activeNode is not null)
                         {
                             if (model.ContainsEntity(createEntityDialog.EntityId))
                                 MessageBox.Show("Сущность уже существует");
                             else
                             {
-                                model.AddEntity(createEntityDialog.EntityId);
+                                int layer = model.GetLayer(activeNode.Id)+1;
+                                model.AddEntity(createEntityDialog.EntityId, layer);
+                                model.AddEdge(activeNode.Id, createEntityDialog.EntityId);
                                 Graph graph = (model as GraphModel)!.Graph;
                                 (model as GraphModel)!.layerConstraints.RemoveAllConstraints();
-                                List<Node> nodes = model.Entities.Select(nodeid => graph.FindNode(nodeid)).ToList();
+                                List<Node> nodes = model.Entities[layer].Select(nodeid => graph.FindNode(nodeid)).ToList();
                                 (model as GraphModel)!.layerConstraints.AddSameLayerNeighbors(nodes);
                                 graph.LayerConstraints = (model as GraphModel)!.layerConstraints;
                                 Graph = graph;
@@ -143,6 +146,7 @@ namespace Mind_maps_editor
         {
             activeNode = node;
         }
+
         #endregion
         #region PropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;

@@ -17,7 +17,7 @@ namespace Mind_maps_editor
         private MindGraph graph;
         #endregion
         #region Properties
-        public List<string> Entities
+        public List<List<string>> Entities
         {
             get;
         }
@@ -37,15 +37,22 @@ namespace Mind_maps_editor
             Entities = new();
         }
         #region Methods
-        public void AddEntity(string id)
+        public void AddEntity(string id, int layer)
         {
             graph.AddNode(id);
-            Entities.Add(id);
+            if (Entities.Count <= layer)
+            {
+                for (int i = Entities.Count; i <= layer; i++)
+                {
+                    Entities.Add(new());
+                }
+            }
+            Entities[layer].Add(id);
         }
         public void RemoveEntity(string id)
         {
             graph.RemoveVertex(graph.GetNode(id));
-            Entities.Remove(id);
+            Entities.ForEach(layer => layer.Remove(id));
         }
         public void AddEdge(string sourceId, string targetId)
         {
@@ -59,9 +66,9 @@ namespace Mind_maps_editor
         {
             Graph = new();
         }
-        public void Regularize()
+        public int GetLayer(string id)
         {
-            
+            return Entities.FindIndex(layer => layer.Contains(id));
         }
         #endregion
     }

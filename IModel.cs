@@ -9,14 +9,14 @@ namespace Mind_maps_editor
 {
     internal interface IModel<T>
     {
-        public List<T> Entities { get; } 
+        public List<List<T>> Entities { get; } 
         #region Methods
-        public void AddEntity(string id);
+        public void AddEntity(string id, int layer);
         public void RemoveEntity(string id);
         public void AddEdge(string sourceId, string targetId);
         public bool ContainsEntity(string id);
         public void Clear();
-        public void Regularize();
+        public int GetLayer(string id);
         #endregion
     }
 }

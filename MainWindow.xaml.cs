@@ -40,17 +40,10 @@ namespace Mind_maps_editor
                     {
                         if (GViewer.SelectedObject is Node node)
                         {
-                            (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Visible;
-                            (cm.Items.GetItemAt(2) as MenuItem)!.Visibility = Visibility.Visible;
                             (DataContext as ViewModel)?.SetActiveNode(node);
+                            cm.PlacementTarget = sender as System.Windows.Controls.Button;
+                            cm.IsOpen = true;
                         }
-                        else
-                        {
-                            (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Collapsed;
-                            (cm.Items.GetItemAt(2) as MenuItem)!.Visibility = Visibility.Collapsed;
-                        }
-                        cm.PlacementTarget = sender as System.Windows.Controls.Button;
-                        cm.IsOpen = true;
                     }
                 }
                 else if (me.Button == System.Windows.Forms.MouseButtons.Left)
