@@ -49,6 +49,18 @@ namespace Mind_maps_editor
             }
             Entities[layer].Add(id);
         }
+        public void RenameEntity(string oldId, string newId)
+        {
+            Node node = graph.GetNode(oldId);
+            node.Id = newId;
+            Entities.ForEach(layer =>
+            {
+                if (layer.Contains(oldId))
+                {
+                    layer[layer.IndexOf(oldId)] = newId;
+                }
+            });
+        }
         public void RemoveEntity(string id)
         {
             graph.RemoveVertex(graph.GetNode(id));
@@ -65,6 +77,10 @@ namespace Mind_maps_editor
         public void Clear()
         {
             Graph = new();
+            Entities.Clear();
+            AddEntity("Корень", 0);
+            Entities.Add(new List<string>());
+            Entities[0].Add("Корень");
         }
         public int GetLayer(string id)
         {

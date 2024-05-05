@@ -1,0 +1,29 @@
+﻿<Window x:Class="Mind_maps_editor.RenameEntityWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Mind_maps_editor"
+        mc:Ignorable="d"
+        Title="Переименование ментальной сущности" Height="120" Width="400" ResizeMode="NoResize" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.05*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.05*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="1">Введите новое содержимое:</TextBlock>
+        <TextBox Name="EntityIdTextBox" Grid.Row="1" Grid.Column="1" MinWidth="250" TextChanged="EntityIdTextBox_TextChanged"/>
+
+        <WrapPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Name="btnOk" IsDefault="True" Click="btnOk_Click" Width="60" Margin="0,0,10,0" IsEnabled="False">OK</Button>
+            <Button IsCancel="True" Width="60" Click="btnClose_Click">Отмена</Button>
+        </WrapPanel>
+    </Grid>
+</Window>

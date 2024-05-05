@@ -21,8 +21,10 @@ namespace Mind_maps_editor
         private Node? activeNode;
         private IModel<string>? model;
         private ICreateEntityDialog createEntityDialog;
+        private IRenameEntityDialog renameEntityDialog;
         private Graph? graph1;
         private RelayCommand? addEntityCommand;
+        private RelayCommand? renameEntityCommand;
         private RelayCommand? removeEntityCommand;
         private RelayCommand? addEdgeCommand;
         private RelayCommand? clearCommand;
@@ -39,9 +41,10 @@ namespace Mind_maps_editor
         }
         #endregion
         #region Constructor
-        public ViewModel(ICreateEntityDialog createEntityDialog)
+        public ViewModel(ICreateEntityDialog createEntityDialog, IRenameEntityDialog renameEntityDialog)
         {
             this.createEntityDialog = createEntityDialog;
+            this.renameEntityDialog = renameEntityDialog;
         }
         #endregion
         #region LayoutConstructors
@@ -78,6 +81,27 @@ namespace Mind_maps_editor
                             }    
                         }
                     });
+            }
+        }
+        public RelayCommand? RenameEntityCommand
+        {
+            get
+            {
+                return renameEntityCommand ??= new RelayCommand(obj =>
+                {
+                    if (model is not null && renameEntityDialog.ShowCreateDialog() == true && !string.IsNullOrEmpty(renameEntityDialog.EntityId) && activeNode is not null)
+                    {
+                        if (model.ContainsEntity(renameEntityDialog.EntityId))
+                            MessageBox.Show("Сущность уже существует");
+                        else
+                        {
+                            model?.RenameEntity(activeNode.Id, renameEntityDialog.EntityId);
+                            SelectionDisabled();
+                            Graph = (model as GraphModel)?.Graph;
+                            OnPropertyChanged(nameof(Graph));
+                        }
+                    }
+                });
             }
         }
         public RelayCommand? RemoveEntityCommand

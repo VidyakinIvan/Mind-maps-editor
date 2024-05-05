@@ -12,6 +12,7 @@ namespace Mind_maps_editor
         public List<List<T>> Entities { get; } 
         #region Methods
         public void AddEntity(string id, int layer);
+        public void RenameEntity(string oldId, string newId);
         public void RemoveEntity(string id);
         public void AddEdge(string sourceId, string targetId);
         public bool ContainsEntity(string id);
