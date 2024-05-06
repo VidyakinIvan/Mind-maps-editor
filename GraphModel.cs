@@ -51,8 +51,18 @@ namespace Mind_maps_editor
         }
         public void RenameEntity(string oldId, string newId)
         {
-            Node node = graph.GetNode(oldId);
-            node.Id = newId;
+            Node? sourceNode = null;
+            List<MindNode> targetNodes = new();
+            List<MindEdge> edges = graph.Edges.ToList();
+            int layer = GetLayer(oldId);
+            foreach (var edge in edges)
+            {
+                if (edge.Target.Id == oldId)
+                    sourceNode = graph.GetNode(edge.Source.Id);
+                if (edge.Source.Id == oldId)
+                    targetNodes.Add(graph.GetNode(edge.Target.Id));
+            }
+            graph.RemoveVertex(graph.GetNode(oldId));
             Entities.ForEach(layer =>
             {
                 if (layer.Contains(oldId))
@@ -60,9 +70,26 @@ namespace Mind_maps_editor
                     layer[layer.IndexOf(oldId)] = newId;
                 }
             });
+            AddEntity(newId, layer);
+            if (sourceNode is not null)
+                AddEdge(sourceNode.Id, newId);
+            foreach (var node in targetNodes)
+            {
+                AddEdge(graph.GetNode(newId).Id, node.Id);
+            }
         }
         public void RemoveEntity(string id)
         {
+            List<MindEdge> edges = graph.Edges.ToList();
+            foreach (var edge in edges)
+            {
+                if (edge.Source.Id == id)
+                {
+                    string nodeId = edge.Target.Id;
+                    graph.RemoveVertex(graph.GetNode(nodeId));
+                    Entities.ForEach(layer => layer.Remove(nodeId));
+                }
+            }
             graph.RemoveVertex(graph.GetNode(id));
             Entities.ForEach(layer => layer.Remove(id));
         }
