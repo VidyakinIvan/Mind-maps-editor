@@ -13,7 +13,7 @@ namespace Mind_maps_editor
     internal class GraphModel : IModel<string>
     {
         #region Fields
-        public LayerConstraints layerConstraints;
+        //public LayerConstraints layerConstraints;
         private MindGraph graph;
         #endregion
         #region Properties
@@ -33,7 +33,7 @@ namespace Mind_maps_editor
         public GraphModel()
         {
             graph = new();
-            layerConstraints = Graph.LayerConstraints;
+            //layerConstraints = Graph.LayerConstraints;
             Entities = new();
         }
         #region Methods

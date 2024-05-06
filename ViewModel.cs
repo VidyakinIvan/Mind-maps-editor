@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Security.Principal;
 using System.Security.Policy;
 using Microsoft.Msagl.Prototype.LayoutEditing;
+using Microsoft.Msagl.GraphViewerGdi;
 
 namespace Mind_maps_editor
 {
@@ -22,7 +23,6 @@ namespace Mind_maps_editor
         private IModel<string>? model;
         private ICreateEntityDialog createEntityDialog;
         private IRenameEntityDialog renameEntityDialog;
-        private Graph? graph1;
         private RelayCommand? addEntityCommand;
         private RelayCommand? renameEntityCommand;
         private RelayCommand? removeEntityCommand;
@@ -32,11 +32,19 @@ namespace Mind_maps_editor
         #region Properties
         public Graph? Graph
         {
-            get => graph1;
+            get
+            {
+                Graph? graph = (model as GraphModel)?.Graph;
+                graph = ReverseGraph(graph);
+                return ReverseGraph((model as GraphModel)?.Graph);
+            }
             set
             {
-                graph1 = value;
-                OnPropertyChanged(nameof(Graph));
+                if (model is GraphModel gm && value is not null)
+                {
+                    gm.Graph = value;
+                    OnPropertyChanged(nameof(Graph));
+                }
             }
         }
         #endregion
@@ -71,12 +79,12 @@ namespace Mind_maps_editor
                                 int layer = model.GetLayer(activeNode.Id)+1;
                                 model.AddEntity(createEntityDialog.EntityId, layer);
                                 model.AddEdge(activeNode.Id, createEntityDialog.EntityId);
-                                Graph graph = (model as GraphModel)!.Graph;
-                                (model as GraphModel)!.layerConstraints.RemoveAllConstraints();
-                                List<Node> nodes = model.Entities[layer].Select(nodeid => graph.FindNode(nodeid)).ToList();
-                                (model as GraphModel)!.layerConstraints.AddSameLayerNeighbors(nodes);
-                                graph.LayerConstraints = (model as GraphModel)!.layerConstraints;
-                                Graph = graph;
+                                //Graph graph = (model as GraphModel)!.Graph;
+                                //(model as GraphModel)!.layerConstraints.RemoveAllConstraints();
+                                //List<Node> nodes = model.Entities[layer].Select(nodeid => graph.FindNode(nodeid)).ToList();
+                                //(model as GraphModel)!.layerConstraints.AddSameLayerNeighbors(nodes);
+                                //graph.LayerConstraints = (model as GraphModel)!.layerConstraints;
+                                //Graph = graph;
                                 OnPropertyChanged(nameof(Graph));
                             }    
                         }
@@ -97,7 +105,6 @@ namespace Mind_maps_editor
                         {
                             model?.RenameEntity(activeNode.Id, renameEntityDialog.EntityId);
                             SelectionDisabled();
-                            Graph = (model as GraphModel)?.Graph;
                             OnPropertyChanged(nameof(Graph));
                         }
                     }
@@ -115,7 +122,6 @@ namespace Mind_maps_editor
                         model?.RemoveEntity(activeNode.Id);
                         SelectionDisabled();
                     }
-                    Graph = (model as GraphModel)?.Graph;
                     OnPropertyChanged(nameof(Graph));
                 });
             }
@@ -131,7 +137,6 @@ namespace Mind_maps_editor
                         model?.AddEdge(selectedNode.Id, activeNode.Id);
                         SelectionDisabled();
                     }
-                    Graph = (model as GraphModel)?.Graph;
                     OnPropertyChanged(nameof(Graph));
                 });
             }
@@ -143,7 +148,6 @@ namespace Mind_maps_editor
                 return clearCommand ??= new RelayCommand(obj =>
                 {
                     model?.Clear();
-                    Graph = (model as GraphModel)?.Graph;
                     OnPropertyChanged(nameof(Graph));
                 });
             }
@@ -153,24 +157,29 @@ namespace Mind_maps_editor
         public void SelectionDisabled()
         {
             if (selectedNode != null)
-            {
-                selectedNode.Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
-                selectedNode.Attr.LineWidth = 1;
                 selectedNode = null;
-                OnPropertyChanged(nameof(Graph));
-            }
         }
         public void SelectionChanged(Node node)
         {
             selectedNode = node;
-            selectedNode.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
-            OnPropertyChanged(nameof(Graph));
         }
         public void SetActiveNode(Node node)
         {
             activeNode = node;
         }
-
+        private Graph? ReverseGraph(Graph? graph)
+        {
+            Graph? graph1 = new();
+            if (graph is null)
+                return null;
+            else if (graph.Edges.Count() == 0)
+                return graph;
+            foreach (var edge in graph.Edges.Reverse())
+            {
+                graph1.AddEdge(edge.Source, edge.Target);
+            }
+            return graph1;
+        }
         #endregion
         #region PropertyChanged
         public event PropertyChangedEventHandler? PropertyChanged;
