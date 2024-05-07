@@ -10,18 +10,21 @@ using Microsoft.Msagl.Drawing;
 using System.Diagnostics;
 using System.Security.Principal;
 using System.Security.Policy;
+using Microsoft.Msagl.Prototype.LayoutEditing;
+using Microsoft.Msagl.GraphViewerGdi;
 
 namespace Mind_maps_editor
 {
-    internal class ViewModel : INotifyPropertyChanged
+    internal class GraphViewModel(ICreateEntityDialog createEntityDialog, IRenameEntityDialog renameEntityDialog) : INotifyPropertyChanged, IViewModel<Node>
     {
         #region Fields
         private Node? selectedNode;
         private Node? activeNode;
-        private IModel? model;
-        private ICreateEntityDialog createEntityDialog;
-        private Graph? graph1;
+        private IModel<Graph> model = new GraphModel();
+        private ICreateEntityDialog createEntityDialog = createEntityDialog;
+        private IRenameEntityDialog renameEntityDialog = renameEntityDialog;
         private RelayCommand? addEntityCommand;
+        private RelayCommand? renameEntityCommand;
         private RelayCommand? removeEntityCommand;
         private RelayCommand? addEdgeCommand;
         private RelayCommand? clearCommand;
@@ -29,26 +32,20 @@ namespace Mind_maps_editor
         #region Properties
         public Graph? Graph
         {
-            get => graph1;
+            get
+            {
+                return model.MentalMap;
+            }
             set
             {
-                graph1 = value;
-                OnPropertyChanged(nameof(Graph));
+                if (value is not null)
+                {
+                    model.MentalMap = value;
+                    OnPropertyChanged(nameof(Graph));
+                }
             }
         }
-        #endregion
-        #region Constructor
-        public ViewModel(ICreateEntityDialog createEntityDialog)
-        {
-            this.createEntityDialog = createEntityDialog;
-        }
-        #endregion
-        #region LayoutConstructors
-        public void GraphLayout()
-        {
-            model ??= new GraphModel();
-            Graph ??= (model as GraphModel)?.Graph;
-        }
+
         #endregion
         #region RelayCommands
         public RelayCommand? AddEntityCommand
@@ -57,16 +54,38 @@ namespace Mind_maps_editor
             {
                 return addEntityCommand ??= new RelayCommand(obj =>
                     {
-                        if (model is not null && createEntityDialog.ShowCreateDialog() == true && !string.IsNullOrEmpty(createEntityDialog.EntityId))
+                        if (model is not null && createEntityDialog.ShowCreateDialog() == true && !string.IsNullOrEmpty(createEntityDialog.EntityId) && activeNode is not null)
                         {
                             if (model.ContainsEntity(createEntityDialog.EntityId))
                                 MessageBox.Show("Сущность уже существует");
                             else
-                                model?.AddEntity(createEntityDialog.EntityId);
+                            {
+                                model.AddEntity(createEntityDialog.EntityId);
+                                model.AddRelation(activeNode.Id, createEntityDialog.EntityId);
+                                OnPropertyChanged(nameof(Graph));
+                            }    
                         }
-                        Graph = (model as GraphModel)?.Graph;
-                        OnPropertyChanged(nameof(Graph));
                     });
+            }
+        }
+        public RelayCommand? RenameEntityCommand
+        {
+            get
+            {
+                return renameEntityCommand ??= new RelayCommand(obj =>
+                {
+                    if (model is not null && renameEntityDialog.ShowCreateDialog() == true && !string.IsNullOrEmpty(renameEntityDialog.EntityId) && activeNode is not null)
+                    {
+                        if (model.ContainsEntity(renameEntityDialog.EntityId))
+                            MessageBox.Show("Сущность уже существует");
+                        else
+                        {
+                            model.RenameEntity(activeNode.Id, renameEntityDialog.EntityId);
+                            SelectionDisabled();
+                            OnPropertyChanged(nameof(Graph));
+                        }
+                    }
+                });
             }
         }
         public RelayCommand? RemoveEntityCommand
@@ -77,10 +96,9 @@ namespace Mind_maps_editor
                 {
                     if (activeNode is not null)
                     {
-                        model?.RemoveEntity(activeNode.Id);
+                        model.RemoveEntity(activeNode.Id);
                         SelectionDisabled();
                     }
-                    Graph = (model as GraphModel)?.Graph;
                     OnPropertyChanged(nameof(Graph));
                 });
             }
@@ -93,10 +111,9 @@ namespace Mind_maps_editor
                 {
                     if (selectedNode is not null && activeNode is not null)
                     {
-                        model?.AddEdge(selectedNode.Id, activeNode.Id);
+                        model.AddRelation(selectedNode.Id, activeNode.Id);
                         SelectionDisabled();
                     }
-                    Graph = (model as GraphModel)?.Graph;
                     OnPropertyChanged(nameof(Graph));
                 });
             }
@@ -107,8 +124,7 @@ namespace Mind_maps_editor
             {
                 return clearCommand ??= new RelayCommand(obj =>
                 {
-                    model?.Clear();
-                    Graph = (model as GraphModel)?.Graph;
+                    model.Clear();
                     OnPropertyChanged(nameof(Graph));
                 });
             }
@@ -118,20 +134,13 @@ namespace Mind_maps_editor
         public void SelectionDisabled()
         {
             if (selectedNode != null)
-            {
-                selectedNode.Attr.Color = Microsoft.Msagl.Drawing.Color.Black;
-                selectedNode.Attr.LineWidth = 1;
                 selectedNode = null;
-                OnPropertyChanged(nameof(Graph));
-            }
         }
-        public void SelectionChanged(Node node)
+        public void SelectionChanged(Node entity)
         {
-            selectedNode = node;
-            selectedNode.Attr.Color = Microsoft.Msagl.Drawing.Color.Red;
-            OnPropertyChanged(nameof(Graph));
+            selectedNode = entity;
         }
-        public void SetActiveNode(Node node)
+        public void SetActiveEntity(Node node)
         {
             activeNode = node;
         }
