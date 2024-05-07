@@ -24,7 +24,7 @@ namespace Mind_maps_editor
         {
             InitializeComponent();
             wfh.Visibility = Visibility.Hidden;
-            DataContext = new ViewModel(new CreateEntityWindow());
+            DataContext = new GraphViewModel(new CreateEntityWindow(), new RenameEntityWindow());
             GViewer.ToolBarIsVisible = false;
             _ = GViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
         }
@@ -40,32 +40,24 @@ namespace Mind_maps_editor
                     {
                         if (GViewer.SelectedObject is Node node)
                         {
-                            (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Visible;
-                            (cm.Items.GetItemAt(2) as MenuItem)!.Visibility = Visibility.Visible;
-                            (DataContext as ViewModel)?.SetActiveNode(node);
+                            (DataContext as IViewModel<Node>)?.SetActiveEntity(node);
+                            cm.PlacementTarget = sender as System.Windows.Controls.Button;
+                            cm.IsOpen = true;
                         }
-                        else
-                        {
-                            (cm.Items.GetItemAt(1) as MenuItem)!.Visibility = Visibility.Collapsed;
-                            (cm.Items.GetItemAt(2) as MenuItem)!.Visibility = Visibility.Collapsed;
-                        }
-                        cm.PlacementTarget = sender as System.Windows.Controls.Button;
-                        cm.IsOpen = true;
                     }
                 }
                 else if (me.Button == System.Windows.Forms.MouseButtons.Left)
                 {
-                    (DataContext as ViewModel)?.SelectionDisabled();
+                    (DataContext as IViewModel<Node>)?.SelectionDisabled();
                     if (GViewer.SelectedObject is Node node)
                     {
-                        (DataContext as ViewModel)?.SelectionChanged(node);
+                        (DataContext as IViewModel<Node>)?.SelectionChanged(node);
                     }
                 }
             }
         }
         private void MenuItemGraph_Click(object sender, RoutedEventArgs e)
         {
-            (DataContext as ViewModel)?.GraphLayout();
             wfh.Visibility = !wfh.IsVisible ? Visibility.Visible : Visibility.Hidden;
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

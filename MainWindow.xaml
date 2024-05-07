@@ -10,9 +10,10 @@
     <Window.Resources>
         <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
         <ContextMenu x:Key="cmGraph">
-            <MenuItem Name="AddNode" Header="Добавить вершину" Command="{Binding Source={StaticResource Proxy}, Path=Data.AddEntityCommand}"/>
-            <MenuItem Name="RemoveNode" Header="Удалить вершину" Command="{Binding Source={StaticResource Proxy}, Path=Data.RemoveEntityCommand}" Visibility="Collapsed"/>
-            <MenuItem Name="AddEdge" Header="Добавить связь" Command="{Binding Source={StaticResource Proxy}, Path=Data.AddRelationCommand}"  Visibility="Collapsed"/>
+            <MenuItem Name="AddNode" Header="Добавить подтему" Command="{Binding Source={StaticResource Proxy}, Path=Data.AddEntityCommand}"/>
+            <MenuItem Name="RenameNode" Header="Переименовать вершину" Command="{Binding Source={StaticResource Proxy}, Path=Data.RenameEntityCommand}"/>
+            <MenuItem Name="RemoveNode" Header="Удалить вершину" Command="{Binding Source={StaticResource Proxy}, Path=Data.RemoveEntityCommand}"/>
+            <MenuItem Name="AddEdge" Header="Добавить связь" Command="{Binding Source={StaticResource Proxy}, Path=Data.AddRelationCommand}"/>
         </ContextMenu>
     </Window.Resources>
     <Grid>
