@@ -18,7 +18,7 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="0.05*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="1">Введите новое содержимое:</TextBlock>
+        <TextBlock Grid.Column="1">Введите новое содержимое сущности:</TextBlock>
         <TextBox Name="EntityIdTextBox" Grid.Row="1" Grid.Column="1" MinWidth="250" TextChanged="EntityIdTextBox_TextChanged"/>
 
         <WrapPanel Grid.Column="1" Grid.Row="2" HorizontalAlignment="Right" Margin="0,15,0,0">

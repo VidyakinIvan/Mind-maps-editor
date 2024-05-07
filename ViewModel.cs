@@ -15,14 +15,14 @@ using Microsoft.Msagl.GraphViewerGdi;
 
 namespace Mind_maps_editor
 {
-    internal class ViewModel : INotifyPropertyChanged
+    internal class GraphViewModel(ICreateEntityDialog createEntityDialog, IRenameEntityDialog renameEntityDialog) : INotifyPropertyChanged, IViewModel<Node>
     {
         #region Fields
         private Node? selectedNode;
         private Node? activeNode;
-        private IModel? model;
-        private ICreateEntityDialog createEntityDialog;
-        private IRenameEntityDialog renameEntityDialog;
+        private IModel<Graph> model = new GraphModel();
+        private ICreateEntityDialog createEntityDialog = createEntityDialog;
+        private IRenameEntityDialog renameEntityDialog = renameEntityDialog;
         private RelayCommand? addEntityCommand;
         private RelayCommand? renameEntityCommand;
         private RelayCommand? removeEntityCommand;
@@ -34,34 +34,18 @@ namespace Mind_maps_editor
         {
             get
             {
-                Graph? graph = (model as GraphModel)?.Graph;
-                graph = ReverseGraph(graph);
-                return ReverseGraph((model as GraphModel)?.Graph);
+                return model.MentalMap;
             }
             set
             {
-                if (model is GraphModel gm && value is not null)
+                if (value is not null)
                 {
-                    gm.Graph = value;
+                    model.MentalMap = value;
                     OnPropertyChanged(nameof(Graph));
                 }
             }
         }
-        #endregion
-        #region Constructor
-        public ViewModel(ICreateEntityDialog createEntityDialog, IRenameEntityDialog renameEntityDialog)
-        {
-            this.createEntityDialog = createEntityDialog;
-            this.renameEntityDialog = renameEntityDialog;
-        }
-        #endregion
-        #region LayoutConstructors
-        public void GraphLayout()
-        {
-            model ??= new GraphModel();
-            model.AddEntity("Корень");
-            Graph ??= (model as GraphModel)?.Graph;
-        }
+
         #endregion
         #region RelayCommands
         public RelayCommand? AddEntityCommand
@@ -77,7 +61,7 @@ namespace Mind_maps_editor
                             else
                             {
                                 model.AddEntity(createEntityDialog.EntityId);
-                                model.AddEdge(activeNode.Id, createEntityDialog.EntityId);
+                                model.AddRelation(activeNode.Id, createEntityDialog.EntityId);
                                 OnPropertyChanged(nameof(Graph));
                             }    
                         }
@@ -96,7 +80,7 @@ namespace Mind_maps_editor
                             MessageBox.Show("Сущность уже существует");
                         else
                         {
-                            model?.RenameEntity(activeNode.Id, renameEntityDialog.EntityId);
+                            model.RenameEntity(activeNode.Id, renameEntityDialog.EntityId);
                             SelectionDisabled();
                             OnPropertyChanged(nameof(Graph));
                         }
@@ -112,7 +96,7 @@ namespace Mind_maps_editor
                 {
                     if (activeNode is not null)
                     {
-                        model?.RemoveEntity(activeNode.Id);
+                        model.RemoveEntity(activeNode.Id);
                         SelectionDisabled();
                     }
                     OnPropertyChanged(nameof(Graph));
@@ -127,7 +111,7 @@ namespace Mind_maps_editor
                 {
                     if (selectedNode is not null && activeNode is not null)
                     {
-                        model?.AddEdge(selectedNode.Id, activeNode.Id);
+                        model.AddRelation(selectedNode.Id, activeNode.Id);
                         SelectionDisabled();
                     }
                     OnPropertyChanged(nameof(Graph));
@@ -140,7 +124,7 @@ namespace Mind_maps_editor
             {
                 return clearCommand ??= new RelayCommand(obj =>
                 {
-                    model?.Clear();
+                    model.Clear();
                     OnPropertyChanged(nameof(Graph));
                 });
             }
@@ -152,26 +136,13 @@ namespace Mind_maps_editor
             if (selectedNode != null)
                 selectedNode = null;
         }
-        public void SelectionChanged(Node node)
+        public void SelectionChanged(Node entity)
         {
-            selectedNode = node;
+            selectedNode = entity;
         }
-        public void SetActiveNode(Node node)
+        public void SetActiveEntity(Node node)
         {
             activeNode = node;
-        }
-        private Graph? ReverseGraph(Graph? graph)
-        {
-            Graph? graph1 = new();
-            if (graph is null)
-                return null;
-            else if (graph.Edges.Count() == 0)
-                return graph;
-            foreach (var edge in graph.Edges.Reverse())
-            {
-                graph1.AddEdge(edge.Source, edge.Target);
-            }
-            return graph1;
         }
         #endregion
         #region PropertyChanged
