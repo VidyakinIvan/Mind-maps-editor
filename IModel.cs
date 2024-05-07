@@ -7,17 +7,15 @@ using Microsoft.Msagl.Drawing;
 
 namespace Mind_maps_editor
 {
-    internal interface IModel<T>
+    internal interface IModel
     {
-        public List<List<T>> Entities { get; } 
         #region Methods
-        public void AddEntity(string id, int layer);
+        public void AddEntity(string id);
         public void RenameEntity(string oldId, string newId);
         public void RemoveEntity(string id);
         public void AddEdge(string sourceId, string targetId);
         public bool ContainsEntity(string id);
         public void Clear();
-        public int GetLayer(string id);
         #endregion
     }
 }

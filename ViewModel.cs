@@ -20,7 +20,7 @@ namespace Mind_maps_editor
         #region Fields
         private Node? selectedNode;
         private Node? activeNode;
-        private IModel<string>? model;
+        private IModel? model;
         private ICreateEntityDialog createEntityDialog;
         private IRenameEntityDialog renameEntityDialog;
         private RelayCommand? addEntityCommand;
@@ -59,7 +59,7 @@ namespace Mind_maps_editor
         public void GraphLayout()
         {
             model ??= new GraphModel();
-            model.AddEntity("Корень", 0);
+            model.AddEntity("Корень");
             Graph ??= (model as GraphModel)?.Graph;
         }
         #endregion
@@ -76,15 +76,8 @@ namespace Mind_maps_editor
                                 MessageBox.Show("Сущность уже существует");
                             else
                             {
-                                int layer = model.GetLayer(activeNode.Id)+1;
-                                model.AddEntity(createEntityDialog.EntityId, layer);
+                                model.AddEntity(createEntityDialog.EntityId);
                                 model.AddEdge(activeNode.Id, createEntityDialog.EntityId);
-                                //Graph graph = (model as GraphModel)!.Graph;
-                                //(model as GraphModel)!.layerConstraints.RemoveAllConstraints();
-                                //List<Node> nodes = model.Entities[layer].Select(nodeid => graph.FindNode(nodeid)).ToList();
-                                //(model as GraphModel)!.layerConstraints.AddSameLayerNeighbors(nodes);
-                                //graph.LayerConstraints = (model as GraphModel)!.layerConstraints;
-                                //Graph = graph;
                                 OnPropertyChanged(nameof(Graph));
                             }    
                         }

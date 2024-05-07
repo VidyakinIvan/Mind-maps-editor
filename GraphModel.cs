@@ -10,17 +10,12 @@ using Microsoft.Msagl.Drawing;
 
 namespace Mind_maps_editor
 {
-    internal class GraphModel : IModel<string>
+    internal class GraphModel : IModel
     {
         #region Fields
-        //public LayerConstraints layerConstraints;
-        private MindGraph graph;
+        private MindGraph graph = new();
         #endregion
         #region Properties
-        public List<List<string>> Entities
-        {
-            get;
-        }
         public Graph Graph
         {
             get => graph.MSAGLConvert();
@@ -30,31 +25,16 @@ namespace Mind_maps_editor
             }
         }
         #endregion
-        public GraphModel()
-        {
-            graph = new();
-            //layerConstraints = Graph.LayerConstraints;
-            Entities = new();
-        }
         #region Methods
-        public void AddEntity(string id, int layer)
+        public void AddEntity(string id)
         {
             graph.AddNode(id);
-            if (Entities.Count <= layer)
-            {
-                for (int i = Entities.Count; i <= layer; i++)
-                {
-                    Entities.Add(new());
-                }
-            }
-            Entities[layer].Add(id);
         }
         public void RenameEntity(string oldId, string newId)
         {
             Node? sourceNode = null;
             List<MindNode> targetNodes = new();
             List<MindEdge> edges = graph.Edges.ToList();
-            int layer = GetLayer(oldId);
             foreach (var edge in edges)
             {
                 if (edge.Target.Id == oldId)
@@ -63,14 +43,7 @@ namespace Mind_maps_editor
                     targetNodes.Add(graph.GetNode(edge.Target.Id));
             }
             graph.RemoveVertex(graph.GetNode(oldId));
-            Entities.ForEach(layer =>
-            {
-                if (layer.Contains(oldId))
-                {
-                    layer[layer.IndexOf(oldId)] = newId;
-                }
-            });
-            AddEntity(newId, layer);
+            AddEntity(newId);
             if (sourceNode is not null)
                 AddEdge(sourceNode.Id, newId);
             foreach (var node in targetNodes)
@@ -87,11 +60,9 @@ namespace Mind_maps_editor
                 {
                     string nodeId = edge.Target.Id;
                     graph.RemoveVertex(graph.GetNode(nodeId));
-                    Entities.ForEach(layer => layer.Remove(nodeId));
                 }
             }
             graph.RemoveVertex(graph.GetNode(id));
-            Entities.ForEach(layer => layer.Remove(id));
         }
         public void AddEdge(string sourceId, string targetId)
         {
@@ -104,14 +75,7 @@ namespace Mind_maps_editor
         public void Clear()
         {
             Graph = new();
-            Entities.Clear();
-            AddEntity("Корень", 0);
-            Entities.Add(new List<string>());
-            Entities[0].Add("Корень");
-        }
-        public int GetLayer(string id)
-        {
-            return Entities.FindIndex(layer => layer.Contains(id));
+            AddEntity("Корень");
         }
         #endregion
     }
