@@ -12,6 +12,8 @@ namespace Mind_maps_editor
         #region Fields
         enum Archetype
         {
+            Tree,
+            Fish,
             Graph,
             Table
         }
