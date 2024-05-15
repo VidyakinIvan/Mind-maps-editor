@@ -1,0 +1,21 @@
+﻿@startuml usecase
+left to right direction
+skinparam packageStyle rect
+actor Пользователь as User
+package Program {
+    usecase (Создаёт МК) as uc1
+    usecase (Открывает существующую МК) as uc2
+    usecase (Добавляет сущность или связь) as uc3
+    usecase (Сохраняет МК) as uc4
+    usecase (Преобразует МК) as uc5
+    usecase (Изменяет существующую сущность или связь) as uc6
+    usecase (Удаляет сущность или связь) as uc7
+}
+User --> uc1
+User --> uc2
+User --> uc3
+User --> uc4
+User --> uc5
+User --> uc6
+User --> uc7
+@enduml

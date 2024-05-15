@@ -42,11 +42,12 @@
             </MenuItem>
             <MenuItem Header="Вид">
                 <MenuItem Header="Граф" Click="MenuItemGraph_Click"/>
-                <MenuItem Header="Таблица"/>
+                <MenuItem Header="Таблица" Click="MenuItemTable_Click"/>
             </MenuItem>
         </Menu>
-        <WindowsFormsHost Name="wfh" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4" >
+        <WindowsFormsHost Name="wfh" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4" Visibility="Hidden">
             <gv:GViewer x:Name="GViewer" Click="GViewer_Click"></gv:GViewer>
         </WindowsFormsHost>
+        <DataGrid x:Name="th" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4" Visibility="Hidden" AutoGenerateColumns="True"/>
     </Grid>
 </Window>
