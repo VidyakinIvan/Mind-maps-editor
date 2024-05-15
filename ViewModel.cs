@@ -15,12 +15,13 @@ using Microsoft.Msagl.GraphViewerGdi;
 
 namespace Mind_maps_editor
 {
-    internal class GraphViewModel(ICreateEntityDialog createEntityDialog, IRenameEntityDialog renameEntityDialog) : INotifyPropertyChanged, IViewModel<Node>
+    internal class ViewModel(ICreateEntityDialog createEntityDialog, IRenameEntityDialog renameEntityDialog) : INotifyPropertyChanged, IViewModel<Node>
     {
         #region Fields
         private Node? selectedNode;
         private Node? activeNode;
-        private IModel<Graph> model = new GraphModel();
+        private IModel model = new GraphModel();
+        private IModel table = new TableModel();
         private ICreateEntityDialog createEntityDialog = createEntityDialog;
         private IRenameEntityDialog renameEntityDialog = renameEntityDialog;
         private RelayCommand? addEntityCommand;
@@ -28,24 +29,50 @@ namespace Mind_maps_editor
         private RelayCommand? removeEntityCommand;
         private RelayCommand? addEdgeCommand;
         private RelayCommand? clearCommand;
+        private RelayCommand? updateTableCommand;
         #endregion
         #region Properties
         public Graph? Graph
         {
             get
             {
-                return model.MentalMap;
+                if (model.ModelArchetype == IModel.Archetype.Graph)
+                    return (model as GraphModel)!.MentalMap;
+                return null;
             }
             set
             {
                 if (value is not null)
                 {
-                    model.MentalMap = value;
-                    OnPropertyChanged(nameof(Graph));
+                    if (model.ModelArchetype == IModel.Archetype.Graph)
+                    {
+                        (model as GraphModel)!.MentalMap = value;
+                        OnPropertyChanged(nameof(Graph));
+                    }
                 }
             }
         }
-
+        public ObservableCollection<Relation> Table
+        {
+            get
+            {
+                if (table.ModelArchetype == IModel.Archetype.Table)
+                    Transformator.Transform(model as GraphModel, table as TableModel);
+                ObservableCollection<Relation> result = [.. (table as TableModel)!.MentalMap];
+                return result;
+            }
+            set
+            {
+                if (table.ModelArchetype == IModel.Archetype.Table)
+                {
+                    Queue<Relation> tableValue = new();
+                    foreach (var pair in value)
+                        tableValue.Enqueue(pair);
+                    (table as TableModel)!.MentalMap = tableValue;
+                    OnPropertyChanged(nameof(Table));
+                }
+            }
+        }
         #endregion
         #region RelayCommands
         public RelayCommand? AddEntityCommand
@@ -63,7 +90,7 @@ namespace Mind_maps_editor
                                 model.AddEntity(createEntityDialog.EntityId);
                                 model.AddRelation(activeNode.Id, createEntityDialog.EntityId);
                                 OnPropertyChanged(nameof(Graph));
-                            }    
+                            }
                         }
                     });
             }
@@ -109,7 +136,7 @@ namespace Mind_maps_editor
             {
                 return addEdgeCommand ??= new RelayCommand(obj =>
                 {
-                    if (selectedNode is not null && activeNode is not null)
+                    if (selectedNode is not null && activeNode is not null && selectedNode != activeNode )
                     {
                         model.AddRelation(selectedNode.Id, activeNode.Id);
                         SelectionDisabled();
@@ -126,6 +153,16 @@ namespace Mind_maps_editor
                 {
                     model.Clear();
                     OnPropertyChanged(nameof(Graph));
+                });
+            }
+        }
+        public RelayCommand? UpdateTableCommand
+        {
+            get
+            {
+                return updateTableCommand ??= new RelayCommand(obj =>
+                {
+                    OnPropertyChanged(nameof(Table));
                 });
             }
         }

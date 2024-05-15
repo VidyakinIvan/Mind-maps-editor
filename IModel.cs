@@ -7,7 +7,7 @@ using Microsoft.Msagl.Drawing;
 
 namespace Mind_maps_editor
 {
-    internal interface IModel<T>
+    public interface IModel
     {
         #region Fields
         enum Archetype
@@ -18,7 +18,6 @@ namespace Mind_maps_editor
         #endregion
         #region Properties
         public Archetype ModelArchetype { get; }
-        public T MentalMap { get; set; }
         #endregion
         #region Methods
         public void AddEntity(string id);
@@ -27,6 +26,8 @@ namespace Mind_maps_editor
         public void AddRelation(string sourceId, string targetId);
         public bool ContainsEntity(string id);
         public void Clear();
+        public List<List<string>> TransformationOut();
+        public void TransformationIn(List<List<string>> data);
         #endregion
     }
 }

@@ -23,7 +23,7 @@ namespace Mind_maps_editor
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new GraphViewModel(new CreateEntityWindow(), new RenameEntityWindow());
+            DataContext = new ViewModel(new CreateEntityWindow(), new RenameEntityWindow());
             GViewer.ToolBarIsVisible = false;
             _ = GViewer.DataBindings.Add("Graph", DataContext, "Graph", false, DataSourceUpdateMode.OnPropertyChanged);
         }
@@ -63,7 +63,6 @@ namespace Mind_maps_editor
         private void MenuItemTable_Click(object sender, RoutedEventArgs e)
         {
             wfh.Visibility = Visibility.Hidden;
-            //th.ItemsSource = (DataContext as IViewModel<Node>)?.GetTable();
             th.Visibility = Visibility.Visible;
         }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

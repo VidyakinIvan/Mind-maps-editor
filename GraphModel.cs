@@ -10,13 +10,13 @@ using Microsoft.Msagl.Drawing;
 
 namespace Mind_maps_editor
 {
-    internal class GraphModel : IModel<Graph>
+    internal class GraphModel : IModel
     {
         #region Fields
         private MindGraph graph = new();
         #endregion
         #region Properties
-        public IModel<Graph>.Archetype ModelArchetype => IModel<Graph>.Archetype.Graph;
+        public IModel.Archetype ModelArchetype => IModel.Archetype.Graph;
         public Graph MentalMap 
         {
             get => ReverseGraph(graph.MSAGLConvert());
@@ -94,6 +94,23 @@ namespace Mind_maps_editor
                 graph1.AddEdge(edge.Source, edge.Target);
             }
             return graph1;
+        }
+        public List<List<string>> TransformationOut()
+        {
+            List<List<string>> result = new();
+            foreach (var edge in graph.Edges)
+                result.Add(new List<string>() { edge.Source.Id, edge.Target.Id });
+            return result;
+        }   
+        public void TransformationIn(List<List<string>> data)
+        {
+            Clear();
+            foreach (var edge in data)
+            {
+                AddEntity(edge[0]);
+                AddEntity(edge[1]);
+                AddRelation(edge[0], edge[1]);
+            }
         }
         #endregion
     }

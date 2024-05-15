@@ -42,12 +42,17 @@
             </MenuItem>
             <MenuItem Header="Вид">
                 <MenuItem Header="Граф" Click="MenuItemGraph_Click"/>
-                <MenuItem Header="Таблица" Click="MenuItemTable_Click"/>
+                <MenuItem Header="Таблица" Click="MenuItemTable_Click" Command="{Binding UpdateTableCommand}"/>
             </MenuItem>
         </Menu>
-        <WindowsFormsHost Name="wfh" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4" Visibility="Hidden">
+        <WindowsFormsHost Name="wfh" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4">
             <gv:GViewer x:Name="GViewer" Click="GViewer_Click"></gv:GViewer>
         </WindowsFormsHost>
-        <DataGrid x:Name="th" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4" Visibility="Hidden" AutoGenerateColumns="True"/>
+        <DataGrid x:Name="th" Grid.Row="1" Grid.ColumnSpan="3" Grid.RowSpan="4" Visibility="Hidden" ItemsSource="{Binding Table}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Тема" Width="*" Binding="{Binding Source}"/>
+                <DataGridTextColumn Header="Подтема" Width="100" Binding="{Binding Destination}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
